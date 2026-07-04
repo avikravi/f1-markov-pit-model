@@ -71,8 +71,11 @@ def process_race(year: int, round_number: int, event_name: str) -> pd.DataFrame:
 
     out = laps[[
         "Driver", "LapNumber", "Compound", "TyreLife",
-        "Position", "gap_to_car_ahead_s", "safety_car_status",
+        "Position", "gap_to_car_ahead_s", "safety_car_status", "LapTime",
     ]].copy()
+
+    out["lap_time_s"] = out["LapTime"].dt.total_seconds()
+    out.drop(columns=["LapTime"], inplace=True)
 
     out.rename(columns={
         "Driver": "driver",
